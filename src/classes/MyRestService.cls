@@ -5,7 +5,7 @@
 
 /**
  * has to be global
- * accessible at : /services/apexrest/MyRestService
+ * accessible at : /services/apexrest/MyRestService/{id}  (using workbench for easy testing)
  *
  *
  * each annotation binds to method and that method would be called based on which rest call is made by client.
@@ -27,14 +27,15 @@ global with sharing class MyRestService {
      */
     @HttpGet
     global static List<MyAccount> getMyAccounts() {
+        RestRequest request = RestContext.request;
         String inputId = request.requestURI.substring(request.requestURI.lastIndexOf('/')+1);
         System.debug(' Rest getMyAccounts inputId ' + inputId );
         List<Account> accounts = [select id, name, type from account limit 5];
         List<MyAccount> myAccounts = new List<MyAccount>();
         for(Account a: accounts) {
             MyAccount myAccount = new MyAccount();
-            myAccount.accountId = a.id;
-            myAccount.accountName = a.name;
+            myAccount.id = a.id;
+            myAccount.name = a.name;
             myAccount.type = a.type;
             myAccounts.add( myAccount );
         }
@@ -47,16 +48,19 @@ global with sharing class MyRestService {
      * POST BODY:
      {
         "name" : "Chintan",
-        "status": "Active"
+        "type": "Customer"
      }
      */
 
     @HttpPost
-    global static MyAccount createMyAccount(String name, String status) {
+    global static MyAccount createMyAccount(String name, String type) {
         MyAccount myAccount = new MyAccount();
-        myAccount.accountId = a.id;
-        myAccount.accountName = a.name;
-        myAccount.type = a.type;
-
+        myAccount.name = name;
+        myAccount.type = type;
+        Account a = new Account(name=name, type=type);
+        insert a;
+        myAccount.id = a.id;
+        return myAccount;
     }
+
 }

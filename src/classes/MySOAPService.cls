@@ -7,7 +7,10 @@
  * anything that needs to be returned must be in webservice - otherwise it wont show up in WSDL.
  *
  * we can have different method - those would be different operations.
- * User Enterprise WSDL to get
+ * User Enterprise WSDL to for getting session token
+ *
+ * Setup -> API -> Enterprise WSDL
+ * Setup -> Apex -> MySOAPService -> WSDL
  */
 
 global without sharing class MySOAPService {
@@ -29,7 +32,5 @@ global without sharing class MySOAPService {
         }
         return myAccounts;
     }
-
-
 
 }
