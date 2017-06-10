@@ -9,6 +9,9 @@
  *
  *
  * each annotation binds to method and that method would be called based on which rest call is made by client.
+ *
+ *
+ * On Server side : create app (callback url can be used if we are using webflow)
  */
 
 @RestResource(urlMapping='/MyRestService/*')
